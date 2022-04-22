@@ -1,0 +1,43 @@
+version: '3.4'
+
+services:
+  discuss:
+    image: lete114/discuss
+    container_name: discuss
+    ports:
+      - "6870:6870"
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+      DISCUSS_DB_TYPE: mongodb
+      #D_MONGO_URL:
+      # 注意: 每次从镜像中创建容器, 甚至重新启动容器, 分配的 ip 不固定, docker 可使用容器名指向容器ip
+      D_MONGO_HOST: discuss-mongo
+      #D_MONGO_PORT: 27017
+      #D_MONGO_DB: Discuss
+      D_MONGO_USER: root
+      D_MONGO_PASSWORD: root
+      #D_MONGO_REPLICASET:
+      #D_MONGO_AUTHSOURCE:
+      #D_MONGO_SSL:
+    networks:
+      - discuss-net
+
+  db:
+    image: mongo
+    container_name: discuss-mongo
+    depends_on:
+      - discuss
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - ./discuss-db:/data/db
+    networks:
+      - discuss-net
+
+networks:
+  discuss-net:
+    driver: bridge
