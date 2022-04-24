@@ -1,8 +1,12 @@
+## ---------------------------
+## 这仅仅是个例子
+## ---------------------------
+
 version: '3.4'
 
 services:
   discuss:
-    image: lete114/discuss
+    image: lete114/discuss ## docker hub 上并未推送 lete114/discuss 镜像
     container_name: discuss
     ports:
       - "6870:6870"
